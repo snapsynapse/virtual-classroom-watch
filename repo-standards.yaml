@@ -1,0 +1,196 @@
+# Optional repository declaration; applicability and adoption are not conformance results.
+schema_version: 1
+intent: INTENT.md
+roles:
+- application
+- hosted
+- agent-facing
+surfaces:
+  website:
+    kind: website
+    sources:
+    - project.yml
+    - data/examples
+    - scripts/build.js
+    - docs/assets/search.js
+    - docs/assets/styles.css
+    - docs/assets/tables.js
+    - docs/favicon.svg
+    - docs/site.webmanifest
+    - imgs/og.png
+    outputs:
+    - docs/index.html
+    - docs/sitemap.xml
+    - docs/llms.txt
+    - docs/agents.json
+    - docs/assets/data.json
+    - agents.json
+    urls:
+    - https://VirtualClassroom.watch/
+    producer: generated
+    build: node scripts/build.js
+    delivery: Configured GitHub Pages main /docs route. Current deployed identity and served bytes require separate verification.
+  json-api:
+    kind: api
+    sources:
+    - project.yml
+    - data/examples
+    - scripts/build.js
+    outputs:
+    - docs/api/v1/authorities.json
+    - docs/api/v1/comparisons.json
+    - docs/api/v1/containers.json
+    - docs/api/v1/index.json
+    - docs/api/v1/mappings.json
+    - docs/api/v1/matrix.json
+    - docs/api/v1/primaries.json
+    urls:
+    - https://VirtualClassroom.watch/api/v1/index.json
+    producer: generated
+    build: node scripts/build.js
+    delivery: Static JSON files included in the generated docs artifact and delivered with the website.
+  assistant-guide:
+    kind: guide
+    sources:
+    - assistant-guide.txt
+    - scripts/build.js
+    outputs:
+    - docs/.well-known/assistant-guide.txt
+    urls:
+    - https://VirtualClassroom.watch/.well-known/assistant-guide.txt
+    producer: generated
+    build: node scripts/build.js
+    delivery: Guide revision 1.0.0 is copied from the root source into the generated docs/.well-known path. Local parity does not establish an achieved GuideCheck level, independent provenance, or current publication.
+checks:
+  data-validation:
+    command: node scripts/validate.js
+    cwd: .
+    expected: Exit 0 after checking mapping and authority references, allowed status values, date syntax, bare-domain URLs, quotation-style talking points, discontinued-status consistency, and mapped source headings. This check does not establish full schema validity or factual freshness.
+    blocking: true
+    prerequisites: Supported Node.js runtime; uses repository source and Node.js built-ins.
+  site-build:
+    command: node scripts/build.js
+    cwd: .
+    expected: Exit 0 after generating the docs website, JSON API, discovery files, and served guide copy from repository source.
+    blocking: true
+    prerequisites: Supported Node.js runtime; rewrites generated docs output and therefore requires review of the resulting artifact.
+  search-local:
+    command: node scripts/check-search.mjs
+    cwd: .
+    expected: Exit 0 for the local generated search contract; defects and infrastructure failures remain distinct.
+    blocking: true
+    prerequisites: Supported Node.js runtime and a current generated docs artifact.
+standards:
+  guidecheck:
+    applicability: applicable
+    adoption: adopted
+    reason: The repository publishes a bounded assistant guide using profile 0.7.1. The generator copies guide revision 1.0.0 to the served path. No manifest is present. Target and achieved level, applicable sidecar and independent-anchor requirements, and current hosted result remain unassessed.
+    surfaces:
+    - assistant-guide
+    checks:
+    - site-build
+    profile: human-verifiable-assistant-guide 0.7.1
+    evidence:
+    - assistant-guide.txt
+  search-contract:
+    applicability: applicable
+    adoption: adopted
+    reason: The hosted property has a repository search validator in the native CI path. Production and search-console evidence remain separate.
+    surfaces:
+    - website
+    - json-api
+    checks:
+    - search-local
+    profile: portfolio-search-indexing-audit/v4
+    evidence:
+    - scripts/check-search.mjs
+    - .github/workflows/build.yml
+  siteline:
+    applicability: applicable
+    adoption: unresolved
+    reason: The public website and JSON API are intended for human and machine use. No current Siteline scan, scanner identity, full result inventory, or deployed-source relationship was established in this declaration tranche.
+    surfaces:
+    - website
+    - json-api
+    - assistant-guide
+    checks: []
+  skill-a11y-audit:
+    applicability: applicable
+    adoption: unresolved
+    reason: The repository publishes a hosted site and carries an accessibility audit context, but this tranche did not establish a current major-finding acceptance gate or current route evidence.
+    surfaces:
+    - website
+    checks: []
+    profile: WCAG 2.2 AA context; portfolio acceptance requires no critical or serious findings
+    evidence:
+    - .a11y-audit/PROJECT_CONTEXT.md
+  ai-posture:
+    applicability: unresolved
+    adoption: unresolved
+    reason: AI Posture publication is an owner-elected subject and scope assertion. No owner decision or current declaration is recorded here, and the reference's coverage of AI-related platform features does not settle applicability.
+    surfaces:
+    - website
+    - json-api
+    checks: []
+  hardguard25:
+    applicability: unresolved
+    adoption: unresolved
+    reason: The reference records platform capabilities and constraints, but this tranche did not assess whether any machine-readable token, budget, or limit metadata falls under a HardGuard25 profile.
+    surfaces:
+    - json-api
+    checks: []
+  llms-full:
+    applicability: applicable
+    adoption: unresolved
+    reason: The hosted agent-facing site publishes docs/llms.txt but no llms-full.txt. No owner-approved comprehensiveness exception or adoption decision is recorded.
+    surfaces:
+    - website
+    checks:
+    - search-local
+    evidence:
+    - docs/llms.txt
+  graceful-boundaries:
+    applicability: not-applicable
+    adoption: not-applicable
+    reason: The current product delivers static HTML and JSON files and exposes no agent-facing runtime refusal or limit surface.
+    surfaces:
+    - website
+    - json-api
+    checks: []
+  skill-provenance:
+    applicability: not-applicable
+    adoption: not-applicable
+    reason: Virtual Classroom Watch is a reference application and does not ship a canonical agent skill bundle.
+    surfaces: []
+    checks: []
+  turnfile:
+    applicability: not-applicable
+    adoption: not-applicable
+    reason: Current repository source and instructions do not establish Turnfile-based multi-agent collaboration as a product or maintenance requirement.
+    surfaces: []
+    checks: []
+  obligation-first:
+    applicability: not-applicable
+    adoption: not-applicable
+    reason: The repository does not adopt the Obligation First naming profile for obligation data or metadata.
+    surfaces: []
+    checks: []
+  everyailaw:
+    applicability: unresolved
+    adoption: unresolved
+    reason: This declaration tranche did not establish a repository region-of-operation policy or an owner decision requiring an EveryAILaw citation.
+    surfaces:
+    - website
+    checks: []
+  self-conformance:
+    applicability: not-applicable
+    adoption: not-applicable
+    reason: Virtual Classroom Watch is a reference application rather than an open specification with its own conformance ladder.
+    surfaces: []
+    checks: []
+reassess_when:
+- The ontology, source directories, generator, public routes, JSON API, or GitHub Pages delivery contract changes.
+- GuideCheck profile, guide revision, declared target, sidecar requirement, or verification process changes.
+- An owner decides AI Posture scope, llms-full treatment, or another unresolved standard.
+- Accessibility acceptance, Siteline evidence, crawler policy, native CI, or local validation contracts change.
+- Evidence contradicts the declared roles, applicability, adoption, source ownership, or delivery map.

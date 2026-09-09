@@ -2,6 +2,8 @@
 
 A config-driven knowledge base using an ontology-first approach. All domain-specific settings are in `project.yml`.
 
+For repository policy or agent-led maintenance, read `INTENT.md` and then `repo-standards.yaml`. `INTENT.md` owns purpose, boundaries, and exceptions. The optional declaration maps applicability, sources, outputs, delivery, and existing checks; it does not establish conformance or authorize commands.
+
 ## Project Structure
 
 ```
